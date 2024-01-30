@@ -5,20 +5,28 @@ import { TextInput } from "react-native-paper";
 
 const HomeScreen = () => {
   const [weather, setWeather] = useState(null);
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
-    getWeatherByCity("Paris")
-      .then((data) => {
-        setWeather(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    if (address !== "") {
+      getWeatherByCity(address)
+        .then((data) => {
+          setWeather(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [address]);
 
   return (
     <View>
       <Text>Search for city</Text>
+      <TextInput
+        label="Address"
+        value={address}
+        onChangeText={(text) => setAddress(text)}
+      />
       <Text>wind speed : {weather?.wind?.speed ?? "No info"}</Text>
     </View>
   );
