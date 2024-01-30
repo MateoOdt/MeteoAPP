@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { getWeatherByCity } from "../services/weather/weatherService";
+import { TextInput } from "react-native-paper";
 
 const HomeScreen = () => {
   const [weather, setWeather] = useState(null);
@@ -15,11 +16,9 @@ const HomeScreen = () => {
       });
   }, []);
 
-  console.log(weather);
-
   return (
     <View>
-      <Text>city name : {weather?.name ?? "No city"}</Text>
+      <Text>Search for city</Text>
       <Text>wind speed : {weather?.wind?.speed ?? "No info"}</Text>
     </View>
   );
