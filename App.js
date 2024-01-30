@@ -1,12 +1,14 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { PaperProvider } from "react-native-paper";
 import HomeScreen from "./screen/Home.screen";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <HomeScreen />
-    </View>
+    <PaperProvider>
+      <View style={styles.container}>
+        <HomeScreen />
+      </View>
+    </PaperProvider>
   );
 }
 
