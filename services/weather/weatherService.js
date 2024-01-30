@@ -1,6 +1,11 @@
 import axios from "axios";
 import { API_KEY, BASE_URL } from "@env";
 
+/**
+ * API Call => retrieve weather informations by city
+ * @param city string
+ * @returns Object
+ */
 const getWeatherByCity = async (city) => {
   try {
     const response = await axios.get(`${BASE_URL}weather`, {

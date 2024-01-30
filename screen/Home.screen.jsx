@@ -17,7 +17,12 @@ const HomeScreen = () => {
 
   console.log(weather);
 
-  return <Text>Welcome on dev</Text>;
+  return (
+    <View>
+      <Text>city name : {weather?.name ?? "No city"}</Text>
+      <Text>wind speed : {weather?.wind?.speed ?? "No info"}</Text>
+    </View>
+  );
 };
 
 export default HomeScreen;
