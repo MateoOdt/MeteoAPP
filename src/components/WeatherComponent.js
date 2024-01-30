@@ -43,7 +43,12 @@ const WeatherComponent = () => {
                     setLoading(false);
                 }
             } catch (error) {
-                console.error(`Error getting weather data: ${error.message}`);
+                if (error.response && error.response.status === 429) {
+                    console.error('Too many requests. Please try again later.');
+                } else {
+                    console.error(`Error getting weather data: ${error.message}`);
+                }
+                setLoading(false);
             }
         };
 
