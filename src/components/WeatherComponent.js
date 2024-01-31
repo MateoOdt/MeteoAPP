@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
 
@@ -11,6 +11,22 @@ const WeatherComponent = () => {
 
     const toggleUnit = () => {
         setUnit(unit === 'metric' ? 'imperial' : 'metric');
+    };
+
+    const getWeatherImage = (weatherDescription) => {
+        const iconMapping = {
+            'clear sky': '01d.png',
+            'few clouds': '02d.png',
+            'scattered clouds': '03d.png',
+            'broken clouds': '04d.png',
+            'shower rain': '09d.png',
+            'rain': '10d.png',
+            'thunderstorm': '11d.png',
+            'snow': '13d.png',
+            'mist': '50d.png',
+        };
+
+        return iconMapping[weatherDescription.toLowerCase()] || null;
     };
 
     useEffect(() => {
@@ -45,10 +61,18 @@ const WeatherComponent = () => {
             } catch (error) {
                 if (error.response && error.response.status === 429) {
                     console.error('Too many requests. Please try again later.');
+                    // Attendre 1 minute avant de réessayer (60000 millisecondes)
+                    setTimeout(() => {
+                        getWeatherData();
+                    }, 60000);
+                } else if (error.message.includes('Cannot read property \'toLowerCase\' of undefined')) {
+                    // Gérer le cas où la description météorologique est undefined
+                    console.error('Error: Weather description is undefined.');
+                    setLoading(false);
                 } else {
                     console.error(`Error getting weather data: ${error.message}`);
+                    setLoading(false);
                 }
-                setLoading(false);
             }
         };
 
@@ -57,19 +81,52 @@ const WeatherComponent = () => {
     }, [location, unit]);
 
     return (
-        <View>
+        <View style={styles.container}>
             <Button title={`Switch to ${unit === 'metric' ? 'Fahrenheit' : 'Celsius'}`} onPress={toggleUnit} />
             {loading ? (
-                <Text>Chargement...</Text>
+                <Text style={styles.loadingText}>Chargement...</Text>
             ) : (
                 <View>
-                    <Text>Météo actuelle à {weather?.name} :</Text>
-                    <Text>Température : {weather?.main?.temp} °{unit === 'metric' ? 'C' : 'F'}</Text>
-                    <Text>Description : {weather?.weather?.[0]?.description}</Text>
+                    <Text style={styles.city}>{weather?.name}</Text>
+                    <Text style={styles.weather}>{weather?.weather?.[0]?.description}</Text>
+                    <Image source={getWeatherImage(weather?.weather?.[0]?.description)} style={styles.weatherImage} />
+                    <Text style={styles.temperature}>Température : {weather?.main?.temp} °{unit === 'metric' ? 'C' : 'F'}</Text>
+                    {/* ... Autres éléments du composant */}
                 </View>
             )}
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: "#ffffff",
+    },
+    loadingText: {
+        fontSize: 18,
+        marginTop: 20,
+    },
+    city: {
+        fontSize: 24,
+        fontWeight: "bold",
+    },
+    weather: {
+        fontSize: 18,
+    },
+    temperature: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+    weatherImage: {
+        width: 50,
+        height: 50,
+        marginTop: 10,
+    },
+    // ... Ajoutez d'autres styles si nécessaire
+});
 
 export default WeatherComponent;
