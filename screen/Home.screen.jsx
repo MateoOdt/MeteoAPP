@@ -2,14 +2,26 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { getWeatherByCity } from "../services/weather/weatherService";
 import { TextInput } from "react-native-paper";
+import { getAddressesByQuery } from "../services/address/addressService";
 
 const HomeScreen = () => {
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState({});
   const [address, setAddress] = useState("");
+  const [addressOptions, setAddressOptions] = useState(null);
 
   useEffect(() => {
     if (address !== "") {
-      getWeatherByCity(address)
+      getAddressesByQuery(address)
+        .then((d) => {
+          setAddressOptions(d);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [address]);
+
+  useEffect(() => {
+    if (addressOptions !== null) {
+      getWeatherByCity(addressOptions[0]?.properties?.label)
         .then((data) => {
           setWeather(data);
         })
@@ -17,7 +29,9 @@ const HomeScreen = () => {
           console.error(error);
         });
     }
-  }, [address]);
+  }, [addressOptions]);
+
+  console.log(weather);
 
   return (
     <View>
@@ -27,7 +41,9 @@ const HomeScreen = () => {
         value={address}
         onChangeText={(text) => setAddress(text)}
       />
-      <Text>wind speed : {weather?.wind?.speed ?? "No info"}</Text>
+      <Text>Wind Speed : {weather?.wind?.speed ?? "No info"}</Text>
+      <Text>Humidity : {weather?.main?.humidity ?? "No info"}</Text>
+      <Text>Weather : {weather?.weather[0]?.description ?? "No info"}</Text>
     </View>
   );
 };
