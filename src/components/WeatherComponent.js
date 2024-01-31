@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WeatherComponent = () => {
     const [location, setLocation] = useState(null);
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [unit, setUnit] = useState('metric'); // 'metric' for Celsius, 'imperial' for Fahrenheit
+    const [unit, setUnit] = useState('metric');
+    const [lastUpdate, setLastUpdate] = useState(null);
 
     const toggleUnit = () => {
         setUnit(unit === 'metric' ? 'imperial' : 'metric');
@@ -29,54 +31,58 @@ const WeatherComponent = () => {
         return iconMapping[weatherDescription.toLowerCase()] || null;
     };
 
+    const shouldFetchData = () => !lastUpdate || (new Date().getTime() - lastUpdate > 30 * 60 * 1000);
+
+    const getLocation = async () => {
+        try {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+
+            if (status !== 'granted') {
+                throw new Error('Permission to access location was denied');
+            }
+
+            const locationData = await Location.getCurrentPositionAsync({});
+            setLocation({
+                latitude: locationData.coords.latitude,
+                longitude: locationData.coords.longitude,
+            });
+        } catch (error) {
+            console.error(`Error getting location: ${error.message}`);
+        }
+    };
+
+    const getWeatherData = async () => {
+        try {
+            if (location && shouldFetchData()) {
+                const apiKey = '42f6c0667e6fa2b0de63ec0aa6b5083d';
+                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=${unit}&appid=${apiKey}`;
+
+                const response = await axios.get(apiUrl);
+                setWeather(response.data);
+                setLoading(false);
+
+                setLastUpdate(new Date().getTime());
+                await AsyncStorage.setItem('lastUpdate', JSON.stringify(lastUpdate));
+            }
+        } catch (error) {
+            // Gérer les erreurs
+        }
+    };
+
+    const loadLastUpdate = async () => {
+        try {
+            const storedLastUpdate = await AsyncStorage.getItem('lastUpdate');
+            if (storedLastUpdate) {
+                setLastUpdate(JSON.parse(storedLastUpdate));
+            }
+        } catch (error) {
+            console.error('Error loading last update from AsyncStorage:', error.message);
+        }
+    };
+
     useEffect(() => {
-        const getLocation = async () => {
-            try {
-                let { status } = await Location.requestForegroundPermissionsAsync();
-
-                if (status !== 'granted') {
-                    throw new Error('Permission to access location was denied');
-                }
-
-                const locationData = await Location.getCurrentPositionAsync({});
-                setLocation({
-                    latitude: locationData.coords.latitude,
-                    longitude: locationData.coords.longitude,
-                });
-            } catch (error) {
-                console.error(`Error getting location: ${error.message}`);
-            }
-        };
-
-        const getWeatherData = async () => {
-            try {
-                if (location) {
-                    const apiKey = '42f6c0667e6fa2b0de63ec0aa6b5083d';
-                    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=${unit}&appid=${apiKey}`;
-
-                    const response = await axios.get(apiUrl);
-                    setWeather(response.data);
-                    setLoading(false);
-                }
-            } catch (error) {
-                if (error.response && error.response.status === 429) {
-                    console.error('Too many requests. Please try again later.');
-                    // Attendre 1 minute avant de réessayer (60000 millisecondes)
-                    setTimeout(() => {
-                        getWeatherData();
-                    }, 60000);
-                } else if (error.message.includes('Cannot read property \'toLowerCase\' of undefined')) {
-                    // Gérer le cas où la description météorologique est undefined
-                    console.error('Error: Weather description is undefined.');
-                    setLoading(false);
-                } else {
-                    console.error(`Error getting weather data: ${error.message}`);
-                    setLoading(false);
-                }
-            }
-        };
-
         getLocation();
+        loadLastUpdate();
         getWeatherData();
     }, [location, unit]);
 
