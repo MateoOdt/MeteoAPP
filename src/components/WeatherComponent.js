@@ -125,7 +125,7 @@ const WeatherComponent = () => {
 
         getLocation();
         getWeatherData();
-    }, [location, unit]);
+    }, []);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
