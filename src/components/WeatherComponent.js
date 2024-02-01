@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
 
@@ -129,16 +129,19 @@ const WeatherComponent = () => {
 
     return (
         <View style={styles.container}>
-            <Button title={`Switch to ${unit === 'metric' ? 'Fahrenheit' : 'Celsius'}`} onPress={toggleUnit} />
+            <Text style={styles.city}>{weather?.name}</Text>
             {loading ? (
                 <Text style={styles.loadingText}>Chargement...</Text>
             ) : (
-                <View>
-                    <Text style={styles.city}>{weather?.name}</Text>
+                <View style={styles.weatherContainer}>
                     <Text style={styles.weather}>{weather?.weather?.[0]?.description}</Text>
-                    <Image source={getWeatherImage(weather?.weather?.[0]?.description)} style={styles.weatherImage} />
-                    <Text style={styles.temperature}>Température : {weather?.main?.temp} °{unit === 'metric' ? 'C' : 'F'}</Text>
-                    {/* ... Autres éléments du composant */}
+                    <TouchableOpacity onPress={toggleUnit}>
+                        <Image source={getWeatherImage(weather?.weather?.[0]?.description)} style={styles.weatherImage} />
+                    </TouchableOpacity>
+                    <Text style={styles.temperature} onPress={toggleUnit}>
+                        Température : {weather?.main?.temp} °{unit === 'metric' ? 'C' : 'F'}
+                    </Text>
+                    <Text style={styles.date}>{new Date().toLocaleString()}</Text>
                 </View>
             )}
         </View>
@@ -150,7 +153,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 20,
         backgroundColor: "#ffffff",
     },
     loadingText: {
@@ -160,18 +162,27 @@ const styles = StyleSheet.create({
     city: {
         fontSize: 24,
         fontWeight: "bold",
+        marginBottom: 10,
+    },
+    weatherContainer: {
+        alignItems: 'center',
     },
     weather: {
         fontSize: 18,
+        marginBottom: 10,
     },
     temperature: {
         fontSize: 20,
         fontWeight: "bold",
+        marginBottom: 10,
     },
     weatherImage: {
-        width: 50,
-        height: 50,
+        width: 80,
+        height: 80,
         marginTop: 10,
+    },
+    date: {
+        fontSize: 16,
     },
     // ... Ajoutez d'autres styles si nécessaire
 });
