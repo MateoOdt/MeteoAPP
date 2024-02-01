@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
+
+
 
 const WeatherComponent = () => {
     const [location, setLocation] = useState(null);
@@ -128,6 +130,7 @@ const WeatherComponent = () => {
     }, []);
 
     return (
+        <ImageBackground source={require('../assets/Background.png')} style={styles.container}>
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.city}>{weather?.name}</Text>
             {loading ? (
@@ -160,6 +163,7 @@ const WeatherComponent = () => {
                 </View>
             )}
         </ScrollView>
+        </ImageBackground>
     );
 };
 
