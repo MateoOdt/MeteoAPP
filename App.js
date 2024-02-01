@@ -1,10 +1,8 @@
-import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { PaperProvider } from "react-native-paper";
-import HomeScreen from "./src/screen/Home.screen";
 import WeatherScreen from "./src/screen/WeatherScreen";
-
+import HomeScreen from "./src/screen/Home.screen";
 const Stack = createStackNavigator();
 
 export default function App() {
