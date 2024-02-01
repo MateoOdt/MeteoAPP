@@ -5,7 +5,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
 const WeatherComponent = () => {
     const [location, setLocation] = useState(null);
     const [weather, setWeather] = useState(null);
@@ -110,8 +109,9 @@ const WeatherComponent = () => {
                 setWeather(response.data);
                 setLoading(false);
 
-                setLastUpdate(new Date().getTime());
-                await AsyncStorage.setItem('lastUpdate', JSON.stringify(lastUpdate));
+                const updatedLastUpdate = new Date().getTime();
+                setLastUpdate(updatedLastUpdate);
+                await AsyncStorage.setItem('lastUpdate', JSON.stringify(updatedLastUpdate));
             }
         } catch (error) {
             // Gérer les erreurs
@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: "#ffffff",
         paddingVertical: 20,
     },
     loadingText: {
