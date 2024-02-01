@@ -8,24 +8,14 @@ import WeatherScreen from "./src/screen/WeatherScreen";
 const Stack = createStackNavigator();
 
 export default function App() {
-    return (
-        <PaperProvider>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName="Home">
-                    <Stack.Screen name="Home" component={HomeScreen} />
-                    <Stack.Screen name="Weather" component={WeatherScreen} />
-
-                </Stack.Navigator>
-            </NavigationContainer>
-        </PaperProvider>
-    );
+  return (
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Weather" component={WeatherScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+  );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
