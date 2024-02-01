@@ -4,102 +4,43 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b492ec-9d08-478c-8269-796e48e23ae3" name="Changes" comment="">
+    <list default="true" id="a694c6e4-f147-420c-aad0-a06949a13c0a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/MeteoAPP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MeteoAPP.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babel.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/babel.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/address/addressService.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/address/addressService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/weather/weatherService.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/weather/weatherService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/WeatherComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WeatherComponent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/Home.screen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/Home.screen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/WeatherScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/WeatherScreen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExternalProjectsData">
-    <projectState path="$PROJECT_DIR$/node_modules/@react-native-async-storage/async-storage/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/@react-native-community/cli-platform-android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/@react-native/gradle-plugin">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-constants/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-constants/scripts">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-file-system/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-font/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-keep-awake/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-location/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-modules-autolinking/scripts/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-modules-core/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-modules-core/android-annotation">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo-modules-core/android-annotation-processor">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/expo/scripts">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/react-native">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/react-native-gesture-handler/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/react-native-safe-area-context/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/react-native-screens/android">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/node_modules/react-native-vector-icons">
-      <ProjectState />
-    </projectState>
-  </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <projects_view>
-          <tree_state>
-            <expand />
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="dev" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
-  <component name="ProjectId" id="2bmSdyh07xBhNI25I8UPdvdIZTV" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2bmUinackGYppiWQ8y7coNYUTTm" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -108,14 +49,11 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "android.gradle.sync.needed": "true",
     "git-widget-placeholder": "feature/geolocation",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/MESSIA/Desktop/MeteoAPP-ce079d92260def328c94cea2fe00e383d3490639",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
+    "last_opened_file_path": "C:/Users/MESSIA/Desktop/MeteoAPP",
     "nodejs_package_manager_path": "npm",
     "npm.start.executor": "Run",
     "ts.external.directory.path": "C:\\Users\\MESSIA\\Desktop\\MeteoAPP\\node_modules\\typescript\\lib",
@@ -149,12 +87,14 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c4b492ec-9d08-478c-8269-796e48e23ae3" name="Changes" comment="" />
-      <created>1706818852655</created>
+      <changelist id="a694c6e4-f147-420c-aad0-a06949a13c0a" name="Changes" comment="" />
+      <created>1706819876657</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1706818852655</updated>
-      <workItem from="1706818853875" duration="1015000" />
+      <updated>1706819876657</updated>
+      <workItem from="1706819877686" duration="242000" />
+      <workItem from="1706820338154" duration="5000" />
+      <workItem from="1706820984170" duration="30000" />
     </task>
     <servers />
   </component>

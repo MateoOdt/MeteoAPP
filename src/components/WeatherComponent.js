@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     infoImage: {
         width: 40,
         height: 40,
-        marginBottom:10
+        marginBottom: 10,
     },
     // ... Ajoutez d'autres styles si nécessaire
 });
