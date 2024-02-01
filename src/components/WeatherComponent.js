@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
 
@@ -128,32 +128,48 @@ const WeatherComponent = () => {
     }, [location, unit]);
 
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.city}>{weather?.name}</Text>
             {loading ? (
                 <Text style={styles.loadingText}>Chargement...</Text>
             ) : (
                 <View style={styles.weatherContainer}>
                     <Text style={styles.weather}>{weather?.weather?.[0]?.description}</Text>
+                    <Image source={getWeatherImage(weather?.weather?.[0]?.description)} style={styles.weatherImage} />
                     <TouchableOpacity onPress={toggleUnit}>
-                        <Image source={getWeatherImage(weather?.weather?.[0]?.description)} style={styles.weatherImage} />
+                        <Text style={styles.temperature}>{weather?.main?.temp} °{unit === 'metric' ? 'C' : 'F'}</Text>
                     </TouchableOpacity>
-                    <Text style={styles.temperature} onPress={toggleUnit}>
-                        Température : {weather?.main?.temp} °{unit === 'metric' ? 'C' : 'F'}
-                    </Text>
                     <Text style={styles.date}>{new Date().toLocaleString()}</Text>
+                    <View style={styles.otherInfoContainer}>
+                        <View style={styles.otherInfo}>
+                            <Image source={require('../assets/parapluie.png')} style={styles.infoImage} />
+                            <Text>{weather?.rain?.['1h'] || 0} mm</Text>
+                            <Text>Précipitation</Text>
+                        </View>
+                        <View style={styles.otherInfo}>
+                            <Image source={require('../assets/goutte.png')} style={styles.infoImage} />
+                            <Text>{weather?.main?.humidity} %</Text>
+                            <Text>Humidité</Text>
+                        </View>
+                        <View style={styles.otherInfo}>
+                            <Image source={require('../assets/vent.png')} style={styles.infoImage} />
+                            <Text>{weather?.wind?.speed} m/s</Text>
+                            <Text>Vitesse du vent</Text>
+                        </View>
+                    </View>
                 </View>
             )}
-        </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: "#ffffff",
+        paddingVertical: 20,
     },
     loadingText: {
         fontSize: 18,
@@ -177,12 +193,29 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     weatherImage: {
-        width: 80,
-        height: 80,
+        width: 120,
+        height: 120,
         marginTop: 10,
     },
     date: {
         fontSize: 16,
+        marginTop: 20,
+    },
+    otherInfoContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        paddingHorizontal: 20,
+    },
+    otherInfo: {
+        alignItems: 'center',
+        marginBottom: 10,
+        marginRight: 25,  // Ajout de la marge à droite pour espacer les éléments
+    },
+    infoImage: {
+        width: 40,
+        height: 40,
+        marginBottom: 10,
     },
     // ... Ajoutez d'autres styles si nécessaire
 });
