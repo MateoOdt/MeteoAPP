@@ -6,6 +6,7 @@ import { getAddressesByQuery } from "../services/address/addressService";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-paper";
+import { ImageBackground } from "react-native";
 
 const HomeScreen = () => {
   const [weather, setWeather] = useState({});
@@ -46,36 +47,45 @@ const HomeScreen = () => {
     setVisible(false);
   };
 
+  {
+    /**
+
+    > */
+  }
+
   return (
-    <LinearGradient
-      colors={["rgba(64,31,79,1)", "rgba(61,41,115,1)"]}
-      style={styles.container}
+    <ImageBackground
+      source={require("../assets/imgBackground.png")}
+      resizeMode="cover"
+      style={styles.image}
     >
-      <Text style={styles.title}>Search for city</Text>
-      <TextInput
-        label="Address"
-        mode="outlined"
-        value={address}
-        onChangeText={(text) => {
-          setAddress(text);
-          setVisible(true);
-        }}
-        style={styles.input}
-      />
-      {addressOptions && visible !== false && (
-        <View style={styles.autocompleteContainer}>
-          {addressOptions.map((option, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.option}
-              onPress={() => handleSelectAddress(option.properties.label)}
-            >
-              <Text style={styles.optionText}>{option.properties.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
-    </LinearGradient>
+      <View style={styles.container}>
+        <Text style={styles.title}>Search for city</Text>
+        <TextInput
+          label="Address"
+          mode="flat"
+          value={address}
+          onChangeText={(text) => {
+            setAddress(text);
+            setVisible(true);
+          }}
+          style={styles.input}
+        />
+        {addressOptions && visible !== false && (
+          <View style={styles.autocompleteContainer}>
+            {addressOptions.map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.option}
+                onPress={() => handleSelectAddress(option.properties.label)}
+              >
+                <Text style={styles.optionText}>{option.properties.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -84,6 +94,13 @@ const styles = StyleSheet.create({
     margin: 0,
     flex: 1,
     padding: 30,
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 30,
+    backgroundColor:
+      "linear-gradient(90deg, rgba(64,31,79,1) 0%, rgba(61,41,115,1) 100%)",
   },
   title: {
     marginTop: 50,
