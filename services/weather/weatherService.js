@@ -21,4 +21,29 @@ const getWeatherByCity = async (city) => {
   }
 };
 
-export { getWeatherByCity };
+/**
+ * Récupère les informations météorologiques par coordonnées géographiques
+ * @param {number} latitude Latitude
+ * @param {number} longitude Longitude
+ * @returns {Promise<Object>}
+ */
+const getWeatherByCoordinates = async (latitude, longitude) => {
+  try {
+    const response = await axios.get(`${BASE_URL}weather`, {
+      params: {
+        lat: latitude,
+        lon: longitude,
+        appid: API_KEY,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des données météorologiques :",
+      error
+    );
+    throw error;
+  }
+};
+
+export { getWeatherByCity, getWeatherByCoordinates };

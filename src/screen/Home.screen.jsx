@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { getWeatherByCity } from "../services/weather/weatherService";
-import { Menu, Button, Provider as PaperProvider } from "react-native-paper";
-import { getAddressesByQuery } from "../services/address/addressService";
-import { LinearGradient } from "expo-linear-gradient";
+import { getAddressesByQuery } from "../../services/address/addressService";
 import { TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-paper";
 import { ImageBackground } from "react-native";
+import { Button } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const [weather, setWeather] = useState({});
@@ -14,6 +13,7 @@ const HomeScreen = () => {
   const [addressOptions, setAddressOptions] = useState(null);
   const [visible, setVisible] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState("");
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (address !== "") {
@@ -26,18 +26,18 @@ const HomeScreen = () => {
   }, [address]);
 
   /**
-   * useEffect(() => {
-    if (selectedAddress !== "") {
-      getWeatherByCity(selectedAddress)
-        .then((data) => {
-          setWeather(data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [selectedAddress]);
-   */
+     * useEffect(() => {
+      if (selectedAddress !== "") {
+        getWeatherByCity(selectedAddress)
+          .then((data) => {
+            setWeather(data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    }, [selectedAddress]);
+     */
 
   console.log(weather);
 
@@ -47,19 +47,24 @@ const HomeScreen = () => {
     setVisible(false);
   };
 
-  {
-    /**
-
-    > */
-  }
+  const navigateToWeatherScreen = () => {
+    navigation.navigate("Weather");
+  };
 
   return (
     <ImageBackground
-      source={require("../assets/imgBackground.png")}
+      source={require("../../assets/imgBackground.png")}
       resizeMode="cover"
       style={styles.image}
     >
       <View style={styles.container}>
+        <Button
+          title="View Weather"
+          onPress={navigateToWeatherScreen}
+          mode="contained"
+        >
+          Geolocalisation
+        </Button>
         <Text style={styles.title}>Search for city</Text>
         <TextInput
           label="Address"
@@ -111,7 +116,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 50,
-    width: 335,
+    width: 270,
   },
   autocompleteContainer: {
     backgroundColor: "rgba(0,0,0,0.2)",
