@@ -47,8 +47,12 @@ const HomeScreen = () => {
     setVisible(false);
   };
 
-  const navigateToWeatherScreen = () => {
+  const navigateToWeatherScreenWithGeo = () => {
     navigation.navigate("Weather");
+  };
+
+  const navigateToWeatherScreen = () => {
+    navigation.navigate("Weather", { paramKey: selectedAddress });
   };
 
   return (
@@ -60,7 +64,7 @@ const HomeScreen = () => {
       <View style={styles.container}>
         <Button
           title="View Weather"
-          onPress={navigateToWeatherScreen}
+          onPress={navigateToWeatherScreenWithGeo}
           mode="contained"
         >
           Geolocalisation
@@ -88,6 +92,16 @@ const HomeScreen = () => {
               </TouchableOpacity>
             ))}
           </View>
+        )}
+        {selectedAddress !== "" && (
+          <Button
+            title="View Weather"
+            onPress={navigateToWeatherScreen}
+            mode="contained"
+            style={styles.weatherBtn}
+          >
+            View Weather
+          </Button>
         )}
       </View>
     </ImageBackground>
@@ -124,6 +138,9 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: "white",
+  },
+  weatherBtn: {
+    marginTop: 20,
   },
 });
 

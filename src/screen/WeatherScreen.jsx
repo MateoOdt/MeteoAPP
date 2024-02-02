@@ -13,7 +13,7 @@ import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getWeatherByCoordinates } from "../../services/weather/weatherService";
 
-const WeatherScreen = () => {
+const WeatherScreen = (label) => {
   const [location, setLocation] = useState(null);
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,6 +23,8 @@ const WeatherScreen = () => {
   const toggleUnit = () => {
     setUnit(unit === "metric" ? "imperial" : "metric");
   };
+
+  console.log(label?.route?.params?.paramKey);
 
   const getWeatherImage = (weatherDescription) => {
     const iconMapping = {
