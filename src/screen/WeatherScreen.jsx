@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   Image,
   TouchableOpacity,
@@ -115,7 +114,11 @@ const WeatherScreen = (label) => {
     try {
       if (location && shouldFetchData) {
         const { latitude, longitude } = location;
-        const weatherData = await getWeatherByCoordinates(latitude, longitude);
+        const weatherData = await getWeatherByCoordinates(
+          latitude,
+          longitude,
+          unit
+        );
 
         setWeather(weatherData);
         setLoading(false);
@@ -135,7 +138,7 @@ const WeatherScreen = (label) => {
   const getWeatherDataFromAddress = async () => {
     if (selectedAddress !== undefined) {
       try {
-        const weatherData = await getWeatherByCity(selectedAddress);
+        const weatherData = await getWeatherByCity(selectedAddress, unit);
 
         setWeather(weatherData);
         setLoading(false);
@@ -159,6 +162,14 @@ const WeatherScreen = (label) => {
     }
   };
 
+  const convertTemperature = (temp) => {
+    if (unit === "metric") {
+      return (((temp - 32) * 5) / 9).toFixed(1);
+    } else {
+      return ((temp * 9) / 5 + 32).toFixed(1);
+    }
+  };
+
   useEffect(() => {
     getLocation();
     loadLastUpdate();
@@ -171,12 +182,11 @@ const WeatherScreen = (label) => {
 
   useEffect(() => {
     if (selectedAddress !== undefined) {
-      console.log(selectedAddress);
       getWeatherDataFromAddress();
     } else {
       getWeatherData();
     }
-  }, [location, selectedAddress]);
+  }, [location, selectedAddress, unit]);
 
   return (
     <ImageBackground
