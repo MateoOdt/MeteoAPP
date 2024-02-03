@@ -12,6 +12,9 @@ import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getWeatherByCoordinates } from "../../services/weather/weatherService";
 import { getWeatherByCity } from "../../services/weather/weatherService";
+import { ActivityIndicator } from "react-native-paper";
+import moment from "moment";
+import { DetailWeather } from "../components/details-weather.component";
 
 const WeatherScreen = (label) => {
   const [location, setLocation] = useState(null);
@@ -162,14 +165,6 @@ const WeatherScreen = (label) => {
     }
   };
 
-  const convertTemperature = (temp) => {
-    if (unit === "metric") {
-      return (((temp - 32) * 5) / 9).toFixed(1);
-    } else {
-      return ((temp * 9) / 5 + 32).toFixed(1);
-    }
-  };
-
   useEffect(() => {
     getLocation();
     loadLastUpdate();
@@ -196,7 +191,7 @@ const WeatherScreen = (label) => {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.city}>{weather?.name}</Text>
         {loading ? (
-          <Text style={styles.loadingText}>Chargement...</Text>
+          <ActivityIndicator animating={true} color={"#FFF"} />
         ) : (
           <View style={styles.weatherContainer}>
             <Text style={styles.weather}>
@@ -211,32 +206,28 @@ const WeatherScreen = (label) => {
                 {weather?.main?.temp} °{unit === "metric" ? "C" : "F"}
               </Text>
             </TouchableOpacity>
-            <Text style={styles.date}>{new Date().toLocaleString()}</Text>
+            <Text style={styles.date}>
+              {moment().format("dddd, D MMMM YYYY | HH:mm")}
+            </Text>
             <View style={styles.otherInfoContainer}>
-              <View style={styles.otherInfo}>
-                <Image
-                  source={require("../assets/parapluie.png")}
-                  style={styles.infoImage}
-                />
-                <Text>{weather?.rain?.["1h"] || 0} mm</Text>
-                <Text>Précipitation</Text>
-              </View>
-              <View style={styles.otherInfo}>
-                <Image
-                  source={require("../assets/goutte.png")}
-                  style={styles.infoImage}
-                />
-                <Text>{weather?.main?.humidity} %</Text>
-                <Text>Humidité</Text>
-              </View>
-              <View style={styles.otherInfo}>
-                <Image
-                  source={require("../assets/vent.png")}
-                  style={styles.infoImage}
-                />
-                <Text>{weather?.wind?.speed} m/s</Text>
-                <Text>Vitesse du vent</Text>
-              </View>
+              <DetailWeather
+                img={require("../assets/parapluie.png")}
+                label={"Précipitation"}
+                value={weather?.rain?.["1h"] || 0}
+                unit={"mm"}
+              />
+              <DetailWeather
+                img={require("../assets/goutte.png")}
+                label={"Humidité"}
+                value={weather?.main?.humidity}
+                unit={"%"}
+              />
+              <DetailWeather
+                img={require("../assets/vent.png")}
+                label={"Vitesse du vent"}
+                value={weather?.wind?.speed}
+                unit={"m/s"}
+              />
             </View>
           </View>
         )}
@@ -252,14 +243,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
   },
-  loadingText: {
-    fontSize: 18,
-    marginTop: 20,
-  },
   city: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#FFF",
+    textShadowColor: "black",
+    textShadowRadius: "5px 5px 5px",
   },
   weatherContainer: {
     alignItems: "center",
@@ -267,36 +257,31 @@ const styles = StyleSheet.create({
   weather: {
     fontSize: 18,
     marginBottom: 10,
+    color: "#FFF",
   },
   temperature: {
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#FFF",
+    textShadowColor: "black",
+    textShadowRadius: "5px 5px 5px",
   },
   weatherImage: {
-    width: 120,
-    height: 120,
+    width: 200,
+    height: 200,
     marginTop: 10,
   },
   date: {
     fontSize: 16,
-    marginTop: 20,
+    marginTop: 5,
+    color: "#FFF",
   },
   otherInfoContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
+    marginTop: 20,
     paddingHorizontal: 20,
-  },
-  otherInfo: {
-    alignItems: "center",
-    marginBottom: 10,
-    marginRight: 25,
-  },
-  infoImage: {
-    width: 40,
-    height: 40,
-    marginBottom: 10,
   },
 });
 
