@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { getAddressesByQuery } from "../../services/address/addressService";
 import { TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-paper";
 import { ImageBackground } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { getAddressesByQuery } from "../../services/address/addressService";
 
 const HomeScreen = () => {
-  const [weather, setWeather] = useState({});
+  const [addressFormatToCity, setAddressFormatToCity] = useState("");
   const [address, setAddress] = useState("");
   const [addressOptions, setAddressOptions] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -25,30 +25,20 @@ const HomeScreen = () => {
     }
   }, [address]);
 
-  /**
-     * useEffect(() => {
-      if (selectedAddress !== "") {
-        getWeatherByCity(selectedAddress)
-          .then((data) => {
-            setWeather(data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
-    }, [selectedAddress]);
-     */
-
-  console.log(weather);
-
-  const handleSelectAddress = (addressLabel) => {
-    setAddress(addressLabel);
-    setSelectedAddress(addressLabel);
+  const handleSelectAddress = (addressProperties) => {
+    console.log(addressProperties);
+    setAddress(addressProperties.label);
+    setSelectedAddress(addressProperties.label);
+    setAddressFormatToCity(addressProperties.city);
     setVisible(false);
   };
 
-  const navigateToWeatherScreen = () => {
+  const navigateToWeatherScreenWithGeo = () => {
     navigation.navigate("Weather");
+  };
+
+  const navigateToWeatherScreen = () => {
+    navigation.navigate("Weather", { paramKey: addressFormatToCity });
   };
 
   return (
@@ -60,7 +50,7 @@ const HomeScreen = () => {
       <View style={styles.container}>
         <Button
           title="View Weather"
-          onPress={navigateToWeatherScreen}
+          onPress={navigateToWeatherScreenWithGeo}
           mode="contained"
         >
           Geolocalisation
@@ -82,12 +72,22 @@ const HomeScreen = () => {
               <TouchableOpacity
                 key={index}
                 style={styles.option}
-                onPress={() => handleSelectAddress(option.properties.label)}
+                onPress={() => handleSelectAddress(option.properties)}
               >
                 <Text style={styles.optionText}>{option.properties.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
+        )}
+        {selectedAddress !== "" && (
+          <Button
+            title="View Weather"
+            onPress={navigateToWeatherScreen}
+            mode="contained"
+            style={styles.weatherBtn}
+          >
+            View Weather
+          </Button>
         )}
       </View>
     </ImageBackground>
@@ -124,6 +124,9 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: "white",
+  },
+  weatherBtn: {
+    marginTop: 20,
   },
 });
 

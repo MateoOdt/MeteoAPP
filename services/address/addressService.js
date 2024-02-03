@@ -8,6 +8,7 @@ const getAddressesByQuery = async (query) => {
         q: query,
       },
     });
+
     return response.data.features;
   } catch (error) {
     console.error("Error fetching address data:", error);

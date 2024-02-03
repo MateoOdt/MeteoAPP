@@ -12,8 +12,9 @@ import {
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getWeatherByCoordinates } from "../../services/weather/weatherService";
+import { getWeatherByCity } from "../../services/weather/weatherService";
 
-const WeatherScreen = () => {
+const WeatherScreen = (label) => {
   const [location, setLocation] = useState(null);
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,6 +24,8 @@ const WeatherScreen = () => {
   const toggleUnit = () => {
     setUnit(unit === "metric" ? "imperial" : "metric");
   };
+
+  const selectedAddress = label?.route?.params?.paramKey;
 
   const getWeatherImage = (weatherDescription) => {
     const iconMapping = {
@@ -129,6 +132,19 @@ const WeatherScreen = () => {
     }
   };
 
+  const getWeatherDataFromAddress = async () => {
+    if (selectedAddress !== undefined) {
+      try {
+        const weatherData = await getWeatherByCity(selectedAddress);
+
+        setWeather(weatherData);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
   const loadLastUpdate = async () => {
     try {
       const storedLastUpdate = await AsyncStorage.getItem("lastUpdate");
@@ -146,12 +162,21 @@ const WeatherScreen = () => {
   useEffect(() => {
     getLocation();
     loadLastUpdate();
-    getWeatherData();
+    if (selectedAddress !== undefined) {
+      getWeatherDataFromAddress();
+    } else {
+      getWeatherData();
+    }
   }, []);
 
   useEffect(() => {
-    getWeatherData();
-  }, [location]);
+    if (selectedAddress !== undefined) {
+      console.log(selectedAddress);
+      getWeatherDataFromAddress();
+    } else {
+      getWeatherData();
+    }
+  }, [location, selectedAddress]);
 
   return (
     <ImageBackground
