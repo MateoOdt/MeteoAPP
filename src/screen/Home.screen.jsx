@@ -26,7 +26,6 @@ const HomeScreen = () => {
   }, [address]);
 
   const handleSelectAddress = (addressProperties) => {
-    console.log(addressProperties);
     setAddress(addressProperties.label);
     setSelectedAddress(addressProperties.label);
     setAddressFormatToCity(addressProperties.city);

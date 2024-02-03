@@ -6,11 +6,12 @@ import { API_KEY, BASE_URL } from "@env";
  * @param city string
  * @returns Object
  */
-const getWeatherByCity = async (city) => {
+const getWeatherByCity = async (city, metric) => {
   try {
     const response = await axios.get(`${BASE_URL}weather`, {
       params: {
         q: city,
+        units: metric,
         appid: API_KEY,
       },
     });
@@ -27,12 +28,13 @@ const getWeatherByCity = async (city) => {
  * @param {number} longitude Longitude
  * @returns {Promise<Object>}
  */
-const getWeatherByCoordinates = async (latitude, longitude) => {
+const getWeatherByCoordinates = async (latitude, longitude, metric) => {
   try {
     const response = await axios.get(`${BASE_URL}weather`, {
       params: {
         lat: latitude,
         lon: longitude,
+        units: metric,
         appid: API_KEY,
       },
     });
