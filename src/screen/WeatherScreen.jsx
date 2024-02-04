@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
+  Touchable,
 } from "react-native";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -15,6 +16,7 @@ import { getWeatherByCity } from "../../services/weather/weatherService";
 import { ActivityIndicator } from "react-native-paper";
 import moment from "moment";
 import { DetailWeather } from "../components/details-weather.component";
+import { useNavigation } from "@react-navigation/native";
 
 const WeatherScreen = (label) => {
   const [location, setLocation] = useState(null);
@@ -22,6 +24,7 @@ const WeatherScreen = (label) => {
   const [loading, setLoading] = useState(true);
   const [unit, setUnit] = useState("metric");
   const [lastUpdate, setLastUpdate] = useState(null);
+  const navigation = useNavigation();
 
   const toggleUnit = () => {
     setUnit(unit === "metric" ? "imperial" : "metric");
@@ -165,6 +168,10 @@ const WeatherScreen = (label) => {
     }
   };
 
+  const navigateToFeedback = () => {
+    navigation.navigate("Feedback");
+  };
+
   useEffect(() => {
     getLocation();
     loadLastUpdate();
@@ -197,10 +204,12 @@ const WeatherScreen = (label) => {
             <Text style={styles.weather}>
               {weather?.weather?.[0]?.description}
             </Text>
-            <Image
-              source={getWeatherImage(weather?.weather?.[0]?.description)}
-              style={styles.weatherImage}
-            />
+            <TouchableOpacity onPress={navigateToFeedback}>
+              <Image
+                source={getWeatherImage(weather?.weather?.[0]?.description)}
+                style={styles.weatherImage}
+              />
+            </TouchableOpacity>
             <TouchableOpacity onPress={toggleUnit}>
               <Text style={styles.temperature}>
                 {weather?.main?.temp} °{unit === "metric" ? "C" : "F"}
