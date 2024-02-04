@@ -6,6 +6,8 @@ import { ImageBackground } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { getAddressesByQuery } from "../../services/address/addressService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const [addressFormatToCity, setAddressFormatToCity] = useState("");
@@ -13,6 +15,7 @@ const HomeScreen = () => {
   const [addressOptions, setAddressOptions] = useState(null);
   const [visible, setVisible] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState("");
+  const [favorites, setFavorites] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -24,6 +27,23 @@ const HomeScreen = () => {
         .catch((err) => console.log(err));
     }
   }, [address]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadFavorites = async () => {
+        try {
+          const existingFavorites = await AsyncStorage.getItem("favorites");
+          if (existingFavorites !== null) {
+            setFavorites(JSON.parse(existingFavorites));
+          }
+        } catch (error) {
+          console.error("Error loading favorites", error);
+        }
+      };
+
+      loadFavorites();
+    }, [])
+  );
 
   const handleSelectAddress = (addressProperties) => {
     setAddress(addressProperties.label);
@@ -38,6 +58,10 @@ const HomeScreen = () => {
 
   const navigateToWeatherScreen = () => {
     navigation.navigate("Weather", { paramKey: addressFormatToCity });
+  };
+
+  const navigateToWeatherScreenWithFav = (fav) => {
+    navigation.navigate("Weather", { paramKey: fav });
   };
 
   return (
@@ -88,6 +112,16 @@ const HomeScreen = () => {
             View Weather
           </Button>
         )}
+        {favorites.map((fav) => (
+          <TouchableOpacity
+            key={fav}
+            onPress={() => navigateToWeatherScreenWithFav(fav)}
+          >
+            <View style={styles.fav}>
+              <Text style={styles.favLabel}>{fav}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
     </ImageBackground>
   );
@@ -126,6 +160,20 @@ const styles = StyleSheet.create({
   },
   weatherBtn: {
     marginTop: 20,
+  },
+  fav: {
+    width: 270,
+    height: 40,
+    backgroundColor: "rgba(1,1,1, 0.2)",
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  favLabel: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: 600,
+    marginLeft: 15,
+    marginTop: 10,
   },
 });
 
