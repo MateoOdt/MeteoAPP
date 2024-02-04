@@ -13,7 +13,7 @@ import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getWeatherByCoordinates } from "../../services/weather/weatherService";
 import { getWeatherByCity } from "../../services/weather/weatherService";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
 import moment from "moment";
 import { DetailWeather } from "../components/details-weather.component";
 import { useNavigation } from "@react-navigation/native";
@@ -25,6 +25,7 @@ const WeatherScreen = (label) => {
   const [unit, setUnit] = useState("metric");
   const [lastUpdate, setLastUpdate] = useState(null);
   const navigation = useNavigation();
+  const [isInFavorites, setIsInFavorites] = useState(false);
 
   const toggleUnit = () => {
     setUnit(unit === "metric" ? "imperial" : "metric");
@@ -168,6 +169,37 @@ const WeatherScreen = (label) => {
     }
   };
 
+  const saveToFavorites = async () => {
+    try {
+      const existingFavorites = await AsyncStorage.getItem("favorites");
+      let newFavorites = [];
+      if (existingFavorites) {
+        newFavorites = [...JSON.parse(existingFavorites), selectedAddress];
+      } else {
+        newFavorites = [selectedAddress];
+      }
+      await AsyncStorage.setItem("favorites", JSON.stringify(newFavorites));
+      alert("Addresse sauvegarder dans vos favoris !");
+    } catch (error) {
+      console.error("Error saving to favorites", error);
+    }
+  };
+  const alreadyInFav = async (address) => {
+    try {
+      const existingFavoritesJson = await AsyncStorage.getItem("favorites");
+      const existingFavorites = existingFavoritesJson
+        ? JSON.parse(existingFavoritesJson)
+        : [];
+
+      return existingFavorites.some((favAddress) => favAddress === address);
+    } catch (error) {
+      console.error("Error checking favorites", error);
+      return false;
+    }
+  };
+
+  alreadyInFav(selectedAddress);
+
   const navigateToFeedback = () => {
     navigation.navigate("Feedback");
   };
@@ -189,6 +221,17 @@ const WeatherScreen = (label) => {
       getWeatherData();
     }
   }, [location, selectedAddress, unit]);
+
+  useEffect(() => {
+    const checkFavorites = async () => {
+      const inFav = await alreadyInFav(selectedAddress);
+      setIsInFavorites(inFav);
+    };
+
+    if (selectedAddress) {
+      checkFavorites();
+    }
+  }, [selectedAddress]);
 
   return (
     <ImageBackground
@@ -238,6 +281,13 @@ const WeatherScreen = (label) => {
                 unit={"m/s"}
               />
             </View>
+            {selectedAddress !== undefined && !isInFavorites && (
+              <TouchableOpacity onPress={saveToFavorites}>
+                <Button mode="contained" style={{ marginTop: 40 }}>
+                  Save to Favorites
+                </Button>
+              </TouchableOpacity>
+            )}
           </View>
         )}
       </ScrollView>
@@ -258,7 +308,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#FFF",
     textShadowColor: "black",
-    textShadowRadius: "5px 5px 5px",
+    textShadowRadius: 5,
   },
   weatherContainer: {
     alignItems: "center",
@@ -274,7 +324,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#FFF",
     textShadowColor: "black",
-    textShadowRadius: "5px 5px 5px",
+    textShadowRadius: 5,
   },
   weatherImage: {
     width: 200,
